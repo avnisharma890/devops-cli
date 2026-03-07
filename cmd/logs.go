@@ -1,40 +1,28 @@
-/*
-Copyright © 2026 NAME HERE <EMAIL ADDRESS>
-
-*/
 package cmd
 
 import (
 	"fmt"
+	"stackctl/internal/docker"
 
 	"github.com/spf13/cobra"
 )
 
 // logsCmd represents the logs command
 var logsCmd = &cobra.Command{
-	Use:   "logs",
+	Use:   "logs [service]",
 	Short: "A brief description of your command",
-	Long: `A longer description that spans multiple lines and likely contains examples
-and usage of using your command. For example:
+	Args:  cobra.ExactArgs(1),
 
-Cobra is a CLI library for Go that empowers applications.
-This application is a tool to generate the needed files
-to quickly create a Cobra application.`,
 	Run: func(cmd *cobra.Command, args []string) {
-		fmt.Println("logs called")
+		service := args[0]
+
+		err := docker.StreamLogs(service)
+		if err != nil {
+			fmt.Println("Error streaming logs: ", err)
+		}
 	},
 }
 
 func init() {
 	rootCmd.AddCommand(logsCmd)
-
-	// Here you will define your flags and configuration settings.
-
-	// Cobra supports Persistent Flags which will work for this command
-	// and all subcommands, e.g.:
-	// logsCmd.PersistentFlags().String("foo", "", "A help for foo")
-
-	// Cobra supports local flags which will only run when this command
-	// is called directly, e.g.:
-	// logsCmd.Flags().BoolP("toggle", "t", false, "Help message for toggle")
 }
