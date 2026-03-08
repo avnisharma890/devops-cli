@@ -21,5 +21,5 @@ func ComposeDown(clean bool) error {
 	}
 
 	fmt.Println("Development stack stopped")
-	return nil 
+	return nil
 }
