@@ -3,10 +3,15 @@ package docker
 import (
 	"fmt"
 	"os/exec"
+	"stackctl/internal/preflight"
 )
 
 func Deploy() error {
 	fmt.Println("Starting deployment pipeline...")
+
+	if err := preflight.RunChecks(); err != nil {
+		return err
+	}
 
 	fmt.Println("Step 1: Building Docker image...")
 
